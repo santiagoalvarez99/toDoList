@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline';  media-src ; font-src 'self' data *" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script type="text/javascript" src="js/jquery-3.4.1.js" ></script>
+    <script type="text/javascript">
+    const id_f_parametro = window.location.search;
+    const descripcion_tarea_f_parametro = window.location.search;
+	const nueva_descripcion_tarea_f = document.getElementById("descripcion_tarea");
+    console.log(descripcion_tarea_f_parametro);
+    const urlParams_id = new URLSearchParams(id_f_parametro);
+    const urlParams_descripcion = new URLSearchParams(descripcion_tarea_f_parametro);
+    //Accedemos a los valores
+    var id_f = urlParams_id.get('id');
+    var descripcion_tarea_f = urlParams_descripcion.get('desc');
+    console.log(id_f);    
+    console.log(descripcion_tarea_f);
+    function ModifyPlaceHolder (){
+        let input = document.getElementById("descripcion_tarea");
+        input.placeholder = descripcion_tarea_f;
+    };
+    document.addEventListener("DOMContentLoaded", ModifyPlaceHolder)
+    
+    function Editar() {        
+        strurl = "https://c973-2803-9800-b8c2-802a-6827-f705-1322-fa49.ngrok.io/ToDoList/default/set_editar_tarea";
+        const nueva_descripcion_tarea_f = $("#descripcion_tarea").val();
+        console.log(nueva_descripcion_tarea_f);
+            $.ajax({
+                url: strurl,
+                data: { id: id_f, descripcion : nueva_descripcion_tarea_f},
+                async: true,
+                success: function(data) {
+                        console.log(data);
+                        if( data.status==1) {
+                            alert(data.msj);
+                            window.location="index.html";
+                        }
+                        else {alert(data.msj)}
+                        ;
+            },
+                error: function() {
+                    
+                }
+            });
+        
+
+    }
+
+       
+
+</script>
+<title>ToDoList SPA Edit</title>
+</head>
+<body class="bg-primary" id="body">
+    <header class="d-flex flex-column align-items-center rounded-lg p-3 w-25 bg-light">
+        <h1 id="encabezado">Editar Tarea</h1>
+    </header>
+    <div class="d-flex flex-column align-items-center rounded-lg p-3 w-25 bg-light">
+        <form class="d-flex flex-column justify-content-center align-items-center p-2">
+            <p class="desc">Ingrese nueva descripcion para la tarea:</p> 
+            <input class="ml-4" id="descripcion_tarea" class="edicion" type="text" name="descripcion_tarea" value="" placeholder="Nueva Descripción"> 
+            <input class="btn btn-outline-primary mb-2"  size="25" id="botonIng" type="button" name="boton" value="Guardar" onclick="Editar()">
+        </form> 
+        <form class="form" action="PanelTareas.html">
+            <input class="btn btn-outline-primary" size="25" id= "botonReg" type="submit" name="boton" value="Cancelar" class="boton">
+        </form>
+    </div>   
+
+</body>
+</html>

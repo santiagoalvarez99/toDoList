@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline';  media-src ; font-src 'self' data *" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script type="text/javascript" src="js/jquery-3.4.1.js" ></script>
+    <script type="text/javascript">
+
+    function Login() {
+
+        strurl = "https://c973-2803-9800-b8c2-802a-6827-f705-1322-fa49.ngrok.io/ToDoList/default/get_login";
+
+        usuario_f = $("#usuario").val();
+        clave_f = $("#clave").val();
+        if (usuario_f ==="" || clave_f ===""){
+            alert("Llene todos los campos");
+        }
+        else{
+            $.ajax({
+            url: strurl,
+            data: { usuario: usuario_f, clave: clave_f},
+            async: true,
+            success: function(data) {
+                    console.log(data);
+                    if( data.status==1) {
+                        window.location="PanelTareas.html";
+                    }
+                    else {alert(data.msj)}
+                    ;
+          },
+            error: function() {
+            }
+        });
+        }    
+    }
+
+       
+
+</script>
+
+    <title>ToDoList SPA</title>
+</head>
+
+<body class="bg-primary">
+    
+    <header class="d-flex flex-column align-items-center rounded-lg p-3 w-25 bg-light">
+        <h1>Ingreso a ToDoList</h1>
+    </header>
+    <div class="d-flex flex-column align-items-center rounded-lg p-3 w-25 bg-light">
+    <form class="d-flex flex-column justify-content-center align-items-center p-2" name="login">
+    	<div class="w-100">
+            <label>Usuario: </label> 
+    	    <input id="usuario" class="userPass" type="text" name="usuario" value="" required> 
+        </div>
+        <div class="w-100">
+           <label>Contraseña: </label>
+    	    <input id="clave" class="userPass" type="password" name="pass" value="" required> 
+        </div>
+    	
+    	<br>
+    	<br>
+       	<input class="btn btn-outline-primary mb-2"  size="25" id= "botonIng" type="button" name="boton" value="Ingresar" onclick="Login()">
+    </form>
+    </div>
+        
+</body>
+
+</html>

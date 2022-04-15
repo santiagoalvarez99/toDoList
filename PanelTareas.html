@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline';  media-src ; font-src 'self' data *" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"><script type="text/javascript" src="js/jquery-3.4.1.js" ></script>
+    <script type="text/javascript">
+    const id_f_parametro = window.location.search;
+    const urlParams_id = new URLSearchParams(id_f_parametro);
+    //Accedemos a los valores
+    var id_f = urlParams_id.get('id');
+    function AgregarNuevaTarea(){
+        strurl = "https://c973-2803-9800-b8c2-802a-6827-f705-1322-fa49.ngrok.io/ToDoList/default/set_nueva_tarea";
+        descripcion_tarea_f = $("#descripcion_nueva_tarea").val();
+        estado_f = 0;
+        console.log(descripcion_tarea_f);
+        $.ajax({
+            url: strurl,
+            data: {descripcion_tarea : descripcion_tarea_f, estado : estado_f},
+            async: true,
+            success: function(data) {
+                    console.log(data);
+                    if( data.status==1) {
+                        alert(data.msj);
+                        window.location="index.html";
+                    }
+                    else {alert(data.msj)}
+                    ;
+            },
+            error: function() {
+                //alert("El tatuador ingresado no existe en nuestra base de datos");
+            }
+        });        
+    }
+    function PasarValor(id){
+        id_global = id;
+        console.log(id_global);
+    }
+
+    $(document).ready(function(){
+            strurl = "https://c973-2803-9800-b8c2-802a-6827-f705-1322-fa49.ngrok.io/ToDoList/default/get_lista";
+
+            $.ajax({
+                url: strurl,
+                dataType: 'json',
+                data: { lista : lista},
+                async: true,
+                processData: false,  // tell jQuery not to process the data
+                contentType: false ,  // tell jQuery not to set contentType
+                success: function(data) {                      
+                        for (i = 0; i < data.length; i++){           
+                            if(data[i].cerrada == 1){
+                                //console.log(data[i]);
+                                //checkbox = '<input id="checkbox" type="checkbox" name="checkbox1" checked></input>';
+                                $("#tabla").append('<tr><td><input id="checkbox" type="checkbox" name="checkbox1" checked onclick="PasarValor(' + data[i].id +')"></input></td>'+
+                                '<td>' + data[i].descripcion + '</td>'+
+                                '<td><a href="PanelEditar.html?id='+ data[i].id +'">Editar</a></td></tr>');
+                            }
+                            else{                
+                            $("#tabla").append('<tr><td><input id="checkbox" type="checkbox" name="checkbox1" onclick="PasarValor(' + data[i].id +')"></input></td>'+
+                                '<td>' + data[i].descripcion + '</td>'+
+                                '<td><a href="PanelEditar.html?id='+ data[i].id + '&' + 'desc=' + data[i].descripcion + '">Editar</a></td></tr>');
+                            }
+                        }
+                        $('input[name=checkbox1]').change(function() {
+                            if ($(this).is(':checked')) {
+                                cerrar_f = 1;
+                                Finalizar(id_global, cerrar_f);
+                                console.log("Checkbox is checked..")
+                            }
+                            else {
+                                cerrar_f = 0;
+                                Finalizar(id_global, cerrar_f);
+                                console.log("Checkbox is not checked..")
+                            }
+                        });
+                },
+                error: function() {
+                }
+            });
+         });
+
+        function Finalizar(id_tarea, cerrar_f){
+            strurl = "https://c973-2803-9800-b8c2-802a-6827-f705-1322-fa49.ngrok.io/ToDoList/default/set_tarea_cerrada";
+            $.ajax({
+                    url: strurl,
+                    data: { id: id_tarea, cerrar : cerrar_f},
+                    async: true,
+                    success: function(data) {
+                        if( data.status==1) {
+                            alert(data.msj);
+                        }
+                        else {alert(data.msj)}
+                    },
+                    error: function() {    
+                    }
+            });       
+        }
+    </script>
+
+    <title>ToDoList SPA</title>
+</head>
+<body class="bg-primary">
+    <header class="d-flex flex-column align-items-center rounded-lg p-3 w-25 bg-light">
+        <h1 id="encabezado">To-Do List</h1>
+    </header>
+  
+    <div class="d-flex flex-column align-items-center rounded-lg p-3 w-25 bg-light"id="lista">
+        <table id="tabla" class="dataTable">
+        </table>
+        <form class="d-flex flex-column align-items-center p-2" action="">
+            <input type="text" name="descripcion_nueva_tarea" id="descripcion_nueva_tarea" placeholder="Nueva Tarea">
+            <input id= "boton_agregar" type="button" name="boton" value="Agregar" class="boton" onclick="AgregarNuevaTarea()">
+        </form>
+        <form class="form" action="index.html">
+            <input id= "boton_volver" type="submit" name="boton" value="Volver Atrás" class="boton">
+        </form>
+    </div>
+    
+</body>
+</html>
