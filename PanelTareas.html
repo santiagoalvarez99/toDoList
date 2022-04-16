@@ -12,7 +12,7 @@
     //Accedemos a los valores
     var id_f = urlParams_id.get('id');
     function AgregarNuevaTarea(){
-        strurl = "https://c973-2803-9800-b8c2-802a-6827-f705-1322-fa49.ngrok.io/ToDoList/default/set_nueva_tarea";
+        strurl = "https://cbd6-2803-9800-b8c2-802a-6827-f705-1322-fa49.ngrok.io/ToDoList/default/set_nueva_tarea";
         descripcion_tarea_f = $("#descripcion_nueva_tarea").val();
         estado_f = 0;
         console.log(descripcion_tarea_f);
@@ -40,7 +40,7 @@
     }
 
     $(document).ready(function(){
-            strurl = "https://c973-2803-9800-b8c2-802a-6827-f705-1322-fa49.ngrok.io/ToDoList/default/get_lista";
+            strurl = "https://cbd6-2803-9800-b8c2-802a-6827-f705-1322-fa49.ngrok.io/ToDoList/default/get_lista";
 
             $.ajax({
                 url: strurl,
@@ -83,7 +83,7 @@
          });
 
         function Finalizar(id_tarea, cerrar_f){
-            strurl = "https://c973-2803-9800-b8c2-802a-6827-f705-1322-fa49.ngrok.io/ToDoList/default/set_tarea_cerrada";
+            strurl = "https://cbd6-2803-9800-b8c2-802a-6827-f705-1322-fa49.ngrok.io/ToDoList/default/set_tarea_cerrada";
             $.ajax({
                     url: strurl,
                     data: { id: id_tarea, cerrar : cerrar_f},
